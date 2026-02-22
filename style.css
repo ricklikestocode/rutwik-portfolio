@@ -1,5 +1,5 @@
 /* =========================================================
-   RESET & GLOBAL
+   RESET
 ========================================================= */
 
 *{
@@ -99,7 +99,7 @@ canvas{
 }
 
 /* =========================================================
-   NAVIGATION
+   NAV
 ========================================================= */
 
 nav{
@@ -323,15 +323,6 @@ h2{
   box-shadow:0 0 20px rgba(255,0,150,0.8);
 }
 
-.timeline-item h3{
-  margin-bottom:10px;
-}
-
-.timeline-item p{
-  margin-bottom:8px;
-  color:#c9c9c9;
-}
-
 /* =========================================================
    PROJECTS
 ========================================================= */
@@ -376,11 +367,10 @@ h2{
 
 .cert-img:hover{
   transform:scale(1.05);
-  box-shadow:0 0 20px rgba(0,255,255,0.5);
 }
 
 /* =========================================================
-   PROJECT MODAL
+   MODAL
 ========================================================= */
 
 .projectView{
@@ -453,20 +443,58 @@ h2{
 }
 
 /* =========================================================
-   RESPONSIVE
+   MOBILE OPTIMIZATION
 ========================================================= */
 
-@media(max-width:768px){
+@media (max-width: 768px) {
 
-  .main-name{
-    font-size:40px;
+  nav{
+    padding:15px 6%;
+  }
+
+  nav ul{
+    gap:15px;
+    font-size:14px;
   }
 
   .section{
     padding:120px 6%;
   }
 
+  .main-name{
+    font-size:36px;
+    letter-spacing:2px;
+  }
+
+  .sub-tagline{
+    font-size:18px;
+  }
+
+  .hero-desc{
+    font-size:15px;
+  }
+
+  .hero-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .btn-primary,
+  .btn-secondary{
+    width:100%;
+    text-align:center;
+  }
+
   .hero-stats{
+    grid-template-columns:1fr;
+  }
+
+  .project-grid{
+    grid-template-columns:1fr;
+  }
+
+  .cert-grid{
     grid-template-columns:1fr;
   }
 
@@ -474,5 +502,4 @@ h2{
     width:100%;
     height:auto;
   }
-
 }
