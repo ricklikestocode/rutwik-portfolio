@@ -1,63 +1,64 @@
 /* =========================================================
-   FUTURISTIC LOADER CONTROL
+   DOM READY
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+/* =========================================================
+   LOADER
 ========================================================= */
 
 document.body.classList.add("loading");
 
 window.addEventListener("load", () => {
   const loader = document.getElementById("loader");
-
-  setTimeout(() => {
-    loader.style.transition = "opacity 1s ease, transform 1s ease";
-    loader.style.opacity = "0";
-    loader.style.transform = "scale(1.2)";
-  }, 1500);
-
-  setTimeout(() => {
-    loader.style.display = "none";
-    document.body.classList.remove("loading");
-  }, 2600);
+  if(loader){
+    setTimeout(()=> loader.style.opacity="0",1200);
+    setTimeout(()=>{
+      loader.style.display="none";
+      document.body.classList.remove("loading");
+    },2200);
+  }
 });
 
 
 /* =========================================================
-   CANVAS SYSTEM (ORIGINAL ROBOT ANIMATION)
+   CANVAS ROBOT SYSTEM
 ========================================================= */
 
 const canvas = document.getElementById("bg");
 const ctx = canvas.getContext("2d");
 
-let width, height;
-let time = 0;
-let scrollProgress = 0;
-let mouseX = 0;
-let mouseY = 0;
+let width,height;
+let time=0;
+let scrollProgress=0;
+let mouseX=0, mouseY=0;
 
 function resize(){
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
 }
 resize();
-window.addEventListener("resize", resize);
+window.addEventListener("resize",resize);
 
-window.addEventListener("mousemove", e=>{
-  mouseX = e.clientX;
-  mouseY = e.clientY;
+window.addEventListener("mousemove",e=>{
+  mouseX=e.clientX;
+  mouseY=e.clientY;
 });
 
-window.addEventListener("scroll", ()=>{
-  const max = document.body.scrollHeight - window.innerHeight;
-  scrollProgress = window.scrollY / max;
+window.addEventListener("scroll",()=>{
+  const max=document.body.scrollHeight-window.innerHeight;
+  scrollProgress=window.scrollY/max;
 });
 
 
 /* ================= GRID ================= */
 
-let gridOffset = 0;
+let gridOffset=0;
 
 function drawGrid(){
-  const size = 120;
-  gridOffset += 0.4;
+  const size=120;
+  gridOffset+=0.4;
 
   ctx.strokeStyle="rgba(255,255,255,0.05)";
   ctx.lineWidth=1;
@@ -80,7 +81,7 @@ function drawGrid(){
 
 /* ================= ROBOT SHAPE ================= */
 
-const robotPoints = 160;
+const robotPoints=160;
 let shape=[];
 
 function generateShape(){
@@ -134,7 +135,7 @@ class Particle{
       ctx.fillStyle="rgb(255,0,150)";
       ctx.shadowColor="rgb(255,0,150)";
       ctx.shadowBlur=12;
-    } else {
+    }else{
       ctx.fillStyle="rgb(0,255,255)";
       ctx.shadowColor="rgb(0,255,255)";
       ctx.shadowBlur=6;
@@ -150,7 +151,7 @@ let particles=[];
 for(let i=0;i<260;i++) particles.push(new Particle());
 
 
-/* ================= AURA ================= */
+/* ================= AURA + EYES ================= */
 
 function drawAura(){
   const cx=width/2;
@@ -166,9 +167,6 @@ function drawAura(){
   ctx.arc(cx,cy,220+pulse,0,Math.PI*2);
   ctx.fill();
 }
-
-
-/* ================= EYES ================= */
 
 let blink=1;
 let blinkTimer=0;
@@ -223,92 +221,158 @@ animate();
 
 
 /* =========================================================
-   SECTION SCROLL ANIMATIONS
+   SECTION REVEAL
 ========================================================= */
 
-const sections = document.querySelectorAll(".section");
-const timelineItems = document.querySelectorAll(".timeline-item");
+const sections=document.querySelectorAll(".section");
 
-function animateOnScroll(){
-  const trigger = window.innerHeight - 120;
-
+function revealSections(){
+  const trigger=window.innerHeight-100;
   sections.forEach(section=>{
-    if(section.getBoundingClientRect().top < trigger){
+    if(section.getBoundingClientRect().top<trigger){
       section.classList.add("active");
     }
   });
-
-  timelineItems.forEach((item,index)=>{
-    if(item.getBoundingClientRect().top < trigger){
-      setTimeout(()=>{
-        item.classList.add("active");
-      }, index * 200);
-    }
-  });
 }
-
-window.addEventListener("scroll", animateOnScroll);
-window.addEventListener("load", animateOnScroll);
+window.addEventListener("scroll",revealSections);
+revealSections();
 
 
 /* =========================================================
-   PROJECT MODAL SYSTEM
+   EXPERIENCE STAGGER ANIMATION
 ========================================================= */
 
-const projectData = {
-  excuse: {
-    title: "Excuse Generator AI",
-    desc: `
-AI-powered automation integrating:
-• Intelligent content generation
-• Backend orchestration
-• PDF generation
-• SMS workflow systems
-• Scalable modular architecture
+const timelineItems=document.querySelectorAll(".timeline-item");
+
+function animateTimeline(){
+  const trigger=window.innerHeight-100;
+
+  timelineItems.forEach((item,index)=>{
+    if(item.getBoundingClientRect().top<trigger){
+      setTimeout(()=>{
+        item.classList.add("active");
+      },index*200);
+    }
+  });
+}
+window.addEventListener("scroll",animateTimeline);
+animateTimeline();
+
+
+/* =========================================================
+   HERO COUNTER ANIMATION
+========================================================= */
+
+const counters=document.querySelectorAll(".stat-box h3");
+
+counters.forEach(counter=>{
+  const text=counter.innerText;
+  if(!isNaN(parseInt(text))){
+    let target=parseInt(text);
+    let count=0;
+    const increment=target/40;
+
+    const update=()=>{
+      count+=increment;
+      if(count<target){
+        counter.innerText=Math.floor(count)+"+";
+        requestAnimationFrame(update);
+      }else{
+        counter.innerText=target+"+";
+      }
+    };
+    update();
+  }
+});
+
+
+/* =========================================================
+   PROJECT DATA (FULL DENSE VERSION)
+========================================================= */
+
+const projectData={
+  excuse:{
+    title:"Excuse Generator AI — Intelligent Automation & Backend Orchestration System",
+
+    desc:`
+Excuse Generator AI is a production-focused intelligent automation platform
+designed to simulate real-world workflow execution.
+
+System Capabilities:
+
+• AI-based structured excuse generation
+• Modular backend routing logic
+• Automated PDF proof document generation
+• SMS communication workflow integration
+• Error handling & fallback logic
+• Deployment-ready architecture
+
+Architecture Design:
+
+The system separates responsibilities into:
+
+- AI generation engine
+- Output formatting module
+- Document rendering system
+- Communication dispatch layer
+- Validation & exception control
+
+This ensures maintainability, scalability and structured system engineering.
     `,
-    images: ["excuse1.png","excuse2.png","excuse3.png","excuse4.png"]
+
+    images:["excuse1.png","excuse2.png","excuse3.png","excuse4.png","excuse5.png"]
   }
 };
 
+
+/* =========================================================
+   PROJECT MODAL
+========================================================= */
+
+const projectView=document.getElementById("projectView");
+const projectTitle=document.getElementById("projectTitle");
+const projectDesc=document.getElementById("projectDesc");
+const projectImages=document.getElementById("projectImages");
+
 document.querySelectorAll(".card").forEach(card=>{
   card.addEventListener("click",()=>{
-    const key = card.dataset.project;
-    if(!key) return;
+    const key=card.getAttribute("data-project");
+    if(!projectData[key]) return;
 
-    const data = projectData[key];
-
-    document.getElementById("projectTitle").innerText = data.title;
-    document.getElementById("projectDesc").innerText = data.desc;
-
-    const imgContainer = document.getElementById("projectImages");
-    imgContainer.innerHTML = "";
+    const data=projectData[key];
+    projectTitle.innerText=data.title;
+    projectDesc.innerText=data.desc;
+    projectImages.innerHTML="";
 
     data.images.forEach(src=>{
-      const img = document.createElement("img");
-      img.src = src;
-      imgContainer.appendChild(img);
+      const img=document.createElement("img");
+      img.src=src;
+      projectImages.appendChild(img);
     });
 
-    document.getElementById("projectView").style.display="block";
+    projectView.style.display="block";
   });
 });
 
 document.getElementById("closeProject").onclick=()=>{
-  document.getElementById("projectView").style.display="none";
+  projectView.style.display="none";
 };
 
 
 /* =========================================================
-   IMAGE POPUP SYSTEM
+   IMAGE POPUP (PROJECT + CERTIFICATES)
 ========================================================= */
 
-const imageModal = document.getElementById("imageModal");
-const modalImg = document.getElementById("modalImg");
+const imageModal=document.getElementById("imageModal");
+const modalImg=document.getElementById("modalImg");
 
-document.addEventListener("click", function(e){
-  if(e.target.tagName === "IMG" && e.target.closest("#projectImages")){
-    imageModal.style.display="flex";
-    modalImg.src=e.target.src;
+document.addEventListener("click",e=>{
+  if(e.target.tagName==="IMG"){
+    if(e.target.closest("#projectImages") ||
+       e.target.classList.contains("cert-img")){
+      imageModal.style.display="flex";
+      modalImg.src=e.target.src;
+    }
   }
 });
 
@@ -316,8 +380,10 @@ document.getElementById("closeImage").onclick=()=>{
   imageModal.style.display="none";
 };
 
-imageModal.onclick=(e)=>{
+imageModal.onclick=e=>{
   if(e.target===imageModal){
     imageModal.style.display="none";
   }
 };
+
+});
